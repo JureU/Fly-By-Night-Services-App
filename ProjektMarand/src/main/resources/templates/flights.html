@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Flights</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #007bff;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Flights List</h1>
+    <form action="/flights" method="get">
+        <label for="origin">Origin:</label>
+        <select name="origin" id="origin">
+            <option value="any">Any</option>
+            <!-- Zapolni z unique odhodi -->
+            <option th:each="origin : ${uniqueOrigins}" th:text="${origin}" th:value="${origin}"></option>
+        </select>
+
+        <label for="destination">Destination:</label>
+        <select name="destination" id="destination">
+            <option value="any">Any</option>
+            <!-- Zapolni z unique destinacijami -->
+            <option th:each="destination : ${uniqueDestinations}" th:text="${destination}" th:value="${destination}"></option>
+        </select>
+
+        <button type="submit">Filter</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Flight Number</th>
+                <th>Origin Airport</th>
+                <th>Destination Airport</th>
+                <th>Carrier</th>
+                <th>Price</th>
+                <th>Day</th>
+                <th>Time</th>
+                <th>Duration</th>
+                <th>Available Seats</th>
+                <th>Reserve</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="record : ${records}">
+                <!-- Podatki letov -->
+                <td th:text="${record.getValues()[0]}"></td>
+                <td th:text="${record.getValues()[1]}"></td>
+                <td th:text="${record.getValues()[2]}"></td>
+                <td th:text="${record.getValues()[3]}"></td>
+                <td th:text="${record.getValues()[4]}"></td>
+                <td th:text="${record.getValues()[5]}"></td>
+                <td th:text="${record.getValues()[6]}"></td>
+                <td th:text="${record.getValues()[7]}"></td>
+                <td th:text="${record.getValues()[8]}"></td>
+                <!-- Link za rezervacijo -->
+                <td><a th:href="@{'/reserve/' + ${record.getValues()[0]}}">Reserve</a></td>
+            </tr>
+        </tbody>        
+    </table>
+</body>
+</html>
